@@ -12,11 +12,11 @@ jobs:
             DOCKER_TARGET_PLATFORM: linux/arm/v7
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v1
+              uses: actions/checkout
             - name: Set up Docker Buildx
-              uses: crazy-max/ghaction-docker-buildx@v1
+              uses: crazy-max/ghaction-docker-buildx
               with:
-                version: latest
+                buildx-version: latest
             - name: Prepare
               if: success()
               id: prepare
