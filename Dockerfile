@@ -2,7 +2,8 @@ FROM ubuntu:18.04
 
 ENV container docker
 # Install other apt deps
-RUN apt-get update && apt-get install -y --no-install-recommends    \
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         systemd-sysv    \
         dbus            \
         wget            \
