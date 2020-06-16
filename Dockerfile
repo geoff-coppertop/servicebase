@@ -53,8 +53,6 @@ USER service
 
 RUN virtualenv venv
 
-ENV INITSYSTEM on
-
 USER root
 
 # Start app
