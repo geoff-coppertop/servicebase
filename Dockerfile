@@ -28,12 +28,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         getty.target                    \
         graphical.target
 
-COPY entry.sh /usr/bin/entry.sh
-COPY app.service /etc/systemd/system/app.service
+COPY ./src/entry.sh /usr/app/src/entry.sh
+COPY ./src/app.service /etc/systemd/system/app.service
 
 STOPSIGNAL 37
 
-ENTRYPOINT ["/usr/bin/entry.sh"]
+ENTRYPOINT ["/usr/app/src/entry.sh"]
 
 WORKDIR /usr/app
 
