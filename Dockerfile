@@ -1,7 +1,6 @@
-FROM ubuntu:18.04
+FROM balenalib/raspberrypi3
 
 ENV container docker
-# Install other apt deps
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         systemd-sysv    \
