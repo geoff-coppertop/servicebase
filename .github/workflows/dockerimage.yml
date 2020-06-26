@@ -89,7 +89,7 @@ jobs:
                         -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
                         -H "Accept: application/vnd.github.everest-preview+json" \
                         -H "Content-Type: application/json" \
-                        https://api.github.com/repos/coppertopgeoff/servicekiosk/dispatches \
+                        https://api.github.com/repos/geoff-coppertop/servicekiosk/dispatches \
                         --data '{"event_type": "build_application"}'
             -   name: Clear
                 if: always() && github.event_name != 'pull_request'
