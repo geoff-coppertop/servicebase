@@ -71,16 +71,26 @@ jobs:
                     echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 
             -   name: Docker Buildx (push)
+                if: success()
                 run: |
                     docker buildx build \
                         --cache-from "type=local,src=/tmp/.buildx-cache" \
                         --output "type=image,push=true" ${{ steps.prepare.outputs.buildx_args }}
 
             -   name: Docker Check Manifest
-                if: always() && github.event_name != 'pull_request'
+                if: success() && github.event_name != 'pull_request'
                 run: |
                     docker run --rm mplatform/mquery ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
 
+            -   name: Trigger Upstream Builds
+                if: success() && github.event_name != 'pull_request'
+                run: |
+                    curl -XPOST \
+                        -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
+                        -H "Accept: application/vnd.github.everest-preview+json" \
+                        -H "Content-Type: application/json" \
+                        https://api.github.com/repos/coppertopgeoff/servicekiosk/dispatches \
+                        --data '{"event_type": "build_application"}'
             -   name: Clear
                 if: always() && github.event_name != 'pull_request'
                 run: |
