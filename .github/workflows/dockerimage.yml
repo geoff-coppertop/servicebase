@@ -1,14 +1,14 @@
 name: servicebase Build/Publish
 
 on:
-  schedule:
-    - cron: '0 3 * * *' # everyday at 3am
-  pull_request:
-    branches: master
-  push:
-    branches: master
-    tags:
-      - v*
+    pull_request:
+        branches:
+            - master
+    push:
+        branches:
+            - master
+        tags:
+            - v*
 
 jobs:
     servicebase:
@@ -21,7 +21,7 @@ jobs:
             -   name: Prepare
                 id: prepare
                 run: |
-                    DOCKER_IMAGE=coppertopgeoff/servicebase
+                    DOCKER_IMAGE=coppertopgeoff/${{ github.repository }}
                     DOCKER_PLATFORMS=linux/arm/v7
                     VERSION=edge
 
@@ -82,45 +82,38 @@ jobs:
                 run: |
                     docker run --rm mplatform/mquery ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
 
-            -   name: Trigger Downstream Build - Kiosk Service
+            -   name: Trigger Downstream Builds
                 if: success() && github.event_name != 'pull_request'
                 run: |
+                    GIT_COMMIT=`git log --format="(%h)%s" -1`
+
                     curl -XPOST \
                         -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
                         -H "Accept: application/vnd.github.everest-preview+json" \
                         -H "Content-Type: application/json" \
                         https://api.github.com/repos/geoff-coppertop/servicekiosk/dispatches \
-                        --data '{"event_type": "upstream build"}'
+                        --data '{"event_type": "upstream trigger - ${GIT_COMMIT}"}'
 
-            -   name: Trigger Downstream Build - Wifi Service
-                if: success() && github.event_name != 'pull_request'
-                run: |
                     curl -XPOST \
                         -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
                         -H "Accept: application/vnd.github.everest-preview+json" \
                         -H "Content-Type: application/json" \
                         https://api.github.com/repos/geoff-coppertop/servicewifi/dispatches \
-                        --data '{"event_type": "upstream build"}'
+                        --data '{"event_type": "upstream trigger - ${GIT_COMMIT}"}'
 
-            -   name: Trigger Downstream Build - Klipper Service
-                if: success() && github.event_name != 'pull_request'
-                run: |
                     curl -XPOST \
                         -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
                         -H "Accept: application/vnd.github.everest-preview+json" \
                         -H "Content-Type: application/json" \
                         https://api.github.com/repos/geoff-coppertop/serviceklipper/dispatches \
-                        --data '{"event_type": "upstream build"}'
+                        --data '{"event_type": "upstream trigger - ${GIT_COMMIT}"}'
 
-            -   name: Trigger Downstream Build - Octoprint Service
-                if: success() && github.event_name != 'pull_request'
-                run: |
                     curl -XPOST \
                         -u "${{ secrets.REPO_DISPATCH_USER}}:${{secrets.REPO_DISPATCH_TOKEN}}" \
                         -H "Accept: application/vnd.github.everest-preview+json" \
                         -H "Content-Type: application/json" \
                         https://api.github.com/repos/geoff-coppertop/serviceoctoprint/dispatches \
-                        --data '{"event_type": "upstream build"}'
+                        --data '{"event_type": "upstream build - ${GIT_COMMIT}"}'
 
             -   name: Clear
                 if: always() && github.event_name != 'pull_request'
