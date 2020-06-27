@@ -1,6 +1,6 @@
 # servicebase
 
-![servicebase Build/Publish](https://github.com/geoff-coppertop/servicebase/workflows/servicebase%20Build/Publish/badge.svg)
+![Base Service Build/Publish](https://github.com/geoff-coppertop/servicebase/workflows/Base%20Service%20Build/Publish/badge.svg)
 
 Base docker image for services
 

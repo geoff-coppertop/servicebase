@@ -1,4 +1,4 @@
-name: servicebase Build/Publish
+name: Base Service Build/Publish
 
 on:
     pull_request:
@@ -11,7 +11,7 @@ on:
             - v*
 
 jobs:
-    servicebase:
+    build:
         runs-on: ubuntu-latest
 
         steps:
@@ -21,7 +21,7 @@ jobs:
             -   name: Prepare
                 id: prepare
                 run: |
-                    DOCKER_IMAGE=coppertopgeoff/${{ github.repository }}
+                    DOCKER_IMAGE=coppertopgeoff/servicebase
                     DOCKER_PLATFORMS=linux/arm/v7
                     VERSION=edge
 
