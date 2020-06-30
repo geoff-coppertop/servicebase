@@ -12,3 +12,5 @@ Base docker image for services
 - <https://help.github.com/en/actions/reference/events-that-trigger-workflows>
 - <https://github.com/crazy-max/ghaction-docker-buildx>
 - <https://github.com/actions/cache>
+- <https://stackoverflow.com/questions/22287872/pipe-output-to-environment-variable-export-command>
+- <https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History>
